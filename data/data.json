@@ -1,0 +1,83 @@
+{
+  "users": [
+    {
+      "id": "a54e",
+      "name": "Jack",
+      "email": "jack@example.com",
+      "password": "qwerty"
+    },
+    {
+      "id": "05af",
+      "name": "Mohammed",
+      "email": "mohammed@gmail.com",
+      "password": "123456"
+    }
+  ],
+  "cities": [
+    {
+      "id": "6ea2",
+      "cityName": "Marsa Maţruḩ",
+      "country": "Egypt",
+      "emoji": "🇪🇬",
+      "date": "2024-09-07T12:53:26.071Z",
+      "notes": "",
+      "position": {
+        "lat": "29.00736833365375",
+        "lng": "27.330952354662163"
+      },
+      "userId": "a54e"
+    },
+    {
+      "id": "d8b0",
+      "cityName": "Al Kharjah",
+      "country": "Egypt",
+      "emoji": "🇪🇬",
+      "date": "2024-09-07T12:54:55.322Z",
+      "notes": "",
+      "position": {
+        "lat": "26.005915069567475",
+        "lng": "30.713013491593298"
+      },
+      "userId": "a54e"
+    },
+    {
+      "id": "01cf",
+      "cityName": "Markaz al Waḩat ad Dakhilah",
+      "country": "Egypt",
+      "emoji": "🇪🇬",
+      "date": "2024-09-07T12:55:42.357Z",
+      "notes": "",
+      "position": {
+        "lat": "25.017429009685358",
+        "lng": "27.59452642255451"
+      },
+      "userId": "a54e"
+    },
+    {
+      "id": "ac91",
+      "cityName": "Biot",
+      "country": "France",
+      "emoji": "🇫🇷",
+      "date": "2024-09-07T12:56:00.416Z",
+      "notes": "",
+      "position": {
+        "lat": "43.614991445565025",
+        "lng": "7.073222869161941"
+      },
+      "userId": "a54e"
+    },
+    {
+      "id": "825d",
+      "cityName": "Ras El Bar",
+      "country": "Egypt",
+      "emoji": "🇪🇬",
+      "date": "2024-09-07T14:07:11.208Z",
+      "notes": "",
+      "position": {
+        "lat": "31.50621900643043",
+        "lng": "31.829650124617906"
+      },
+      "userId": "a54e"
+    }
+  ]
+}

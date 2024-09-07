@@ -1,6 +1,13 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 import { SERVER_URL } from '../utils/constants';
 import toast from 'react-hot-toast';
+
+import {
+  saveToLocalStorage,
+  getFromLocalStorage,
+  clearLocalStorage,
+} from '../utils/localStorage';
+import { useCities } from './CitiesContext';
 
 const AuthContext = createContext();
 
@@ -40,10 +47,7 @@ function reducer(state, action) {
 }
 
 function AuthProvider({ children }) {
-  const [{ user, isAuthenticated }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const { refreshCities } = useCities();
 
   async function login(email, password) {
     dispatch({ type: 'loading' });
@@ -61,6 +65,11 @@ function AuthProvider({ children }) {
       if (user.password !== password) {
         throw new Error('Invalid password');
       }
+
+      saveToLocalStorage('userId', user.id);
+      saveToLocalStorage('isAuthenticated', true);
+
+      refreshCities(user.id);
 
       dispatch({ type: 'login', payload: user });
     } catch (error) {
@@ -90,7 +99,10 @@ function AuthProvider({ children }) {
 
       const data = await response.json();
 
-      console.log({ register: data });
+      saveToLocalStorage('userId', data.id);
+      saveToLocalStorage('isAuthenticated', true);
+
+      refreshCities(data.id);
 
       dispatch({ type: 'register', payload: data });
     } catch (err) {
@@ -99,8 +111,40 @@ function AuthProvider({ children }) {
   }
 
   function logout() {
+    clearLocalStorage();
+
     dispatch({ type: 'logout' });
   }
+
+  const isAuthenticatedFromStorage =
+    getFromLocalStorage('isAuthenticated') || false;
+
+  const initialStateWithStorage = {
+    ...initialState,
+    isAuthenticated: isAuthenticatedFromStorage,
+  };
+
+  const [{ user, isAuthenticated }, dispatch] = useReducer(
+    reducer,
+    initialStateWithStorage
+  );
+
+  useEffect(() => {
+    async function fetchUser() {
+      const userId = getFromLocalStorage('userId');
+
+      if (!userId) return;
+
+      const response = await fetch(`${SERVER_URL}/users/${userId}`);
+      const data = await response.json();
+
+      console.log({ fetchUser: data });
+
+      dispatch({ type: 'login', payload: data });
+    }
+
+    fetchUser();
+  }, []);
 
   return (
     <AuthContext.Provider
