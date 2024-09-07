@@ -12,9 +12,9 @@ export default function Register() {
   const navigate = useNavigate();
   const { register, isAuthenticated } = useAuth();
 
-  const [name, setName] = useState('Jack');
-  const [email, setEmail] = useState('jack@example.com');
-  const [password, setPassword] = useState('qwerty');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();

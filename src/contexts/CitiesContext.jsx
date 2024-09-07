@@ -1,7 +1,7 @@
 import { createContext, useReducer, useEffect, useContext } from 'react';
 
 import { SERVER_URL } from '../utils/constants';
-import useUserId from '../hooks/useUserID';
+import { getFromLocalStorage } from '../utils/localStorage';
 
 const CitiesContext = createContext();
 
@@ -53,27 +53,23 @@ function CitiesProvider({ children }) {
     intialState
   );
 
-  const { userId } = useUserId();
+  useEffect(function () {
+    async function fetchCities() {
+      const userId = getFromLocalStorage('userId');
+      dispatch({ type: 'loading' });
 
-  useEffect(
-    function () {
-      async function fetchCities() {
-        dispatch({ type: 'loading' });
+      try {
+        const res = await fetch(`${SERVER_URL}/cities?userId=${userId}`);
+        const data = await res.json();
 
-        try {
-          const res = await fetch(`${SERVER_URL}/cities?userId=${userId}`);
-          const data = await res.json();
-
-          dispatch({ type: 'cities/loaded', payload: data });
-        } catch (err) {
-          dispatch({ type: 'rejected', payload: err.message });
-        }
+        dispatch({ type: 'cities/loaded', payload: data });
+      } catch (err) {
+        dispatch({ type: 'rejected', payload: err.message });
       }
+    }
 
-      fetchCities();
-    },
-    [userId]
-  );
+    fetchCities();
+  }, []);
 
   async function refreshCities(userId) {
     dispatch({ type: 'loading' });
@@ -105,6 +101,8 @@ function CitiesProvider({ children }) {
 
   async function createCity(newCity) {
     dispatch({ type: 'loading' });
+
+    const userId = getFromLocalStorage('userId');
 
     try {
       const res = await fetch(`${SERVER_URL}/cities`, {
