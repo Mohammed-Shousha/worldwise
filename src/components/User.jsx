@@ -1,0 +1,26 @@
+import { useNavigate } from 'react-router-dom';
+
+import { useAuth } from '../contexts/AuthContext';
+
+import styles from './User.module.css';
+import { USER_AVATAR_URL } from '../utils/constants';
+
+function User() {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  function handleClick() {
+    logout();
+    navigate('/');
+  }
+
+  return (
+    <div className={styles.user}>
+      <img src={USER_AVATAR_URL} alt={user.name} />
+      <span>Welcome, {user.name}</span>
+      <button onClick={handleClick}>Logout</button>
+    </div>
+  );
+}
+
+export default User;
