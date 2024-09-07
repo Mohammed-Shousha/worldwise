@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/AuthContext';
 
@@ -9,7 +9,9 @@ import Button from '../components/Button';
 import styles from './Register.module.css';
 
 export default function Register() {
+  const navigate = useNavigate();
   const { register, isAuthenticated } = useAuth();
+
   const [name, setName] = useState('Jack');
   const [email, setEmail] = useState('jack@example.com');
   const [password, setPassword] = useState('qwerty');
@@ -17,10 +19,15 @@ export default function Register() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (name && email && password) {
-      register(name, email, password);
-    }
+    if (name && email && password) register(name, email, password);
   }
+
+  useEffect(
+    function () {
+      if (isAuthenticated) navigate('/app', { replace: true });
+    },
+    [isAuthenticated, navigate]
+  );
 
   return (
     <main className={styles.register}>

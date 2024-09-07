@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/AuthContext';
 
@@ -9,17 +9,24 @@ import Button from '../components/Button';
 import styles from './Login.module.css';
 
 export default function Login() {
+  const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
+
   const [email, setEmail] = useState('jack@example.com');
   const [password, setPassword] = useState('qwerty');
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (email && password) {
-      login(email, password);
-    }
+    if (email && password) login(email, password);
   }
+
+  useEffect(
+    function () {
+      if (isAuthenticated) navigate('/app', { replace: true });
+    },
+    [isAuthenticated, navigate]
+  );
 
   return (
     <main className={styles.login}>
